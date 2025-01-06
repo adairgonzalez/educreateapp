@@ -12,22 +12,38 @@ export default function Header({ user }: Props) {
     <nav>
       <div className="mx-auto max-w-7xl relative px-[32px] py-[18px] flex items-center justify-between">
         <div className="flex flex-1 items-center justify-start">
-          <Link className="flex items-center" href={'/'}>
-            <Image className="w-auto block" src="/logo.svg" width={131} height={28} alt="AeroEdit" />
+          <Link className="flex items-center gap-3" href={'/'}>
+            <Image
+              src={'/assets/icons/logo/educreate-logo.png'}
+              alt={'eduCreate logo'}
+              width={24}
+              height={24}
+              className="h-auto w-10"
+            />
+            <span className={'text-2xl font-bold'}>eduCreate</span>
           </Link>
         </div>
-        <div className="flex flex-1 items-center justify-end">
-          <div className="flex space-x-4">
-            {user?.id ? (
-              <Button variant={'secondary'} asChild={true}>
-                <Link href={'/dashboard'}>Dashboard</Link>
-              </Button>
-            ) : (
-              <Button asChild={true} variant={'secondary'}>
+        <div className="flex flex-1 items-center justify-end gap-4">
+          <Button variant={'ghost'} asChild={true}>
+            <Link href={'/'}>Home</Link>
+          </Button>
+          <Link href={'/pricing'}>
+            <Button variant={'ghost'}>Pricing</Button>
+          </Link>
+          {user?.id ? (
+            <Button variant={'secondary'} asChild={true}>
+              <Link href={'/dashboard'}>Dashboard</Link>
+            </Button>
+          ) : (
+            <>
+              <Button variant={'ghost'} asChild={true}>
                 <Link href={'/login'}>Sign in</Link>
               </Button>
-            )}
-          </div>
+              <Button variant={'secondary'} asChild={true}>
+                <Link href={'/signup'}>Start Free Trial</Link>
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </nav>

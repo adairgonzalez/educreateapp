@@ -3,6 +3,12 @@ import '../../styles/login.css';
 import { LoginCardGradient } from '@/components/gradients/login-card-gradient';
 import { GhLoginButton } from '@/components/authentication/gh-login-button';
 import { SignupForm } from '@/components/authentication/sign-up-form';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Sign Up - eduCreate',
+  description: 'Create your eduCreate account',
+};
 
 export default function SignupPage() {
   return (

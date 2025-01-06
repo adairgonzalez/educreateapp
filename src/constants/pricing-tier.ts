@@ -10,7 +10,7 @@ export interface Tier {
 
 export const PricingTier: Tier[] = [
   {
-    name: '“Rookie Teacher” Plan',
+    name: 'Starter',
     id: 'starter',
     icon: '/assets/icons/price-tiers/free-icon.svg',
     description: '“Learning the Ropes”',
@@ -27,7 +27,7 @@ export const PricingTier: Tier[] = [
     priceId: { month: 'pri_01jgwx06pk2sp2msxekjy7nen6', year: 'pri_01jgwx2vqj2cmjjveb9pr5v2tg' },
   },
   {
-    name: '“Classroom Commander” Plan',
+    name: 'Pro',
     id: 'pro',
     icon: '/assets/icons/price-tiers/basic-icon.svg',
     description: '“Elevate Your Teaching”',
@@ -45,7 +45,7 @@ export const PricingTier: Tier[] = [
     priceId: { month: 'pri_01jgwx7dakhxwc8v2db3ybyhkt', year: 'pri_01jgwx8dg2an9a3xk49zdrk7b7' },
   },
   {
-    name: '"Education Overload" Plan',
+    name: 'Enterprise',
     id: 'advanced',
     icon: '/assets/icons/price-tiers/pro-icon.svg',
     description: '“Comprehensive Educational Solution” ',

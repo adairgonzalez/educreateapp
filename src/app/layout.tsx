@@ -1,30 +1,29 @@
+import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '../styles/globals.css';
 import '../styles/layout.css';
-import { ReactNode } from 'react';
-import type { Metadata } from 'next';
-import { Toaster } from '@/components/ui/toaster';
+import '../styles/home-page.css';
+import '../styles/login.css';
+import '../styles/dashboard.css';
+import '../styles/checkout.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://paddle-billing.vercel.app'),
-  title: 'AeroEdit',
-  description:
-    'AeroEdit is a powerful team design collaboration app and image editor. With plans for businesses of all sizes, streamline your workflow with real-time collaboration, advanced editing tools, and seamless project management.',
+  title: 'eduCreate - Interactive Learning Platform',
+  description: 'Create engaging educational content with AI-powered tools',
+  icons: {
+    icon: '/favicon.ico', // Default favicon
+    shortcut: '/favicon.ico', // Shortcut icon
+    apple: '/apple-icon.png', // Apple touch icon
+  },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={'min-h-full dark'}>
-      <body className={inter.className}>
-        {children}
-        <Toaster />
-      </body>
+    <html lang="en" className={'dark'}>
+      <head />
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

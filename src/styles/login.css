@@ -21,7 +21,7 @@
 .login-card-hard-blur,
 .login-card-vertical-hard-blur,
 .login-card-soft-blur,
-.login-card-yellow-highlight {
+.login-card-blue-highlight {
   position: relative;
 }
 
@@ -48,7 +48,7 @@
   left: 50%;
   margin-left: -44px;
   top: -2px;
-  background: #fff800;
+  background: #00adb5;
   opacity: 0.5;
   filter: blur(12px);
 }
@@ -63,7 +63,7 @@
   top: -140px;
   border-radius: 280px;
   opacity: 0.1;
-  background: #fff800;
+  background: #00adb5;
   filter: blur(48px);
 }
 
@@ -81,29 +81,28 @@
   top: -19px;
   border-radius: 384px;
   opacity: 0.2;
-  background: #fff800;
+  background: #00adb5;
   filter: blur(32px);
 }
 
-.login-card-small-yellow-highlight::before {
+.login-card-small-blue-highlight::before {
   width: 250px;
   margin-left: -125px;
 }
-.login-card-medium-yellow-highlight::before {
+.login-card-medium-blue-highlight::before {
   width: 384px;
   margin-left: -192px;
 }
 
-.login-card-yellow-highlight::before {
+.login-card-blue-highlight::before {
   content: '';
   height: 1px;
   left: 50%;
-
   position: absolute;
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0) 15%,
-    rgba(255, 248, 0, 0.9) 50%,
+    rgba(0, 173, 181, 0.9) 50%,
     rgba(255, 255, 255, 0) 85%
   );
 }
