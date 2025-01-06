@@ -2,10 +2,9 @@ import { SuccessPageGradients } from '@/components/gradients/success-page-gradie
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { PoweredByPaddle } from '@/components/home/footer/powered-by-paddle';
 import '../../../styles/checkout.css';
 import { createClient } from '@/utils/supabase/server';
-
+import { EduCreateFooter } from '@/components/home/footer/powered-by-paddle';
 export default async function SuccessPage() {
   const supabase = createClient();
   const { data } = await supabase.auth.getUser();
@@ -33,7 +32,7 @@ export default async function SuccessPage() {
           </div>
         </div>
         <div className={'absolute bottom-0 w-full'}>
-          <PoweredByPaddle />
+          <EduCreateFooter />
         </div>
       </div>
     </main>
