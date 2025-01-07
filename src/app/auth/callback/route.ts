@@ -1,20 +1,37 @@
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { createClient } from '@/utils/supabase/server';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
-  const code = searchParams.get('code');
-  // if "next" is in param, use it as the redirect URL
-  const next = searchParams.get('next') ?? '/';
+  const requestUrl = new URL(request.url);
+  const code = requestUrl.searchParams.get('code');
+  const next = requestUrl.searchParams.get('next') ?? '/create-profile';
 
-  if (code) {
-    const supabase = createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) {
-      return NextResponse.redirect(`${origin}${next}`);
-    }
+  if (!code) {
+    console.log('No code found in request');
+    return NextResponse.redirect(new URL('/login?error=no-code-provided', requestUrl));
   }
 
-  // return the user to an error page with instructions
-  return NextResponse.redirect(`${origin}/auth/auth-code-error`);
+  try {
+    const supabase = createRouteHandlerClient({ cookies });
+    console.log('Code:', code);
+    console.log('Cookies:', cookies().getAll());
+
+    // Exchange the code for a session
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+
+    if (error) {
+      console.error('Exchange error:', error);
+      return NextResponse.redirect(new URL('/login?error=auth-failed', requestUrl));
+    }
+
+    console.log('Exchange successful:', data);
+
+    return NextResponse.redirect(new URL(next, requestUrl));
+  } catch (error) {
+    console.error('Callback error:', error);
+    return NextResponse.redirect(new URL('/login?error=server-error', requestUrl));
+  }
 }

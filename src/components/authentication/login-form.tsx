@@ -3,20 +3,38 @@
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { login, loginAnonymously } from '@/app/login/actions';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AuthenticationForm } from '@/components/authentication/authentication-form';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/components/ui/use-toast';
+import { useRouter } from 'next/navigation';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export function LoginForm() {
   const { toast } = useToast();
+  const router = useRouter();
+  const supabase = createClientComponentClient();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (session) {
+        router.push('/dashboard');
+      }
+    };
+    checkSession();
+  }, [router, supabase.auth]);
 
   function handleLogin() {
     login({ email, password }).then((data) => {
       if (data?.error) {
         toast({ description: 'Invalid email or password', variant: 'destructive' });
+      } else {
+        router.push('/dashboard');
       }
     });
   }
@@ -25,6 +43,8 @@ export function LoginForm() {
     loginAnonymously().then((data) => {
       if (data?.error) {
         toast({ description: 'Something went wrong. Please try again', variant: 'destructive' });
+      } else {
+        router.push('/dashboard');
       }
     });
   }

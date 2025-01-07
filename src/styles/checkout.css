@@ -155,10 +155,5 @@
   left: calc(50% - 124px);
   width: 248px;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 15%,
-    rgba(255, 248, 0, 0.6) 50%,
-    rgba(255, 255, 255, 0) 85%
-  );
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 15%, rgb(0, 172, 181) 50%, rgba(255, 255, 255, 0) 85%);
 }

@@ -6,9 +6,11 @@ import { useState } from 'react';
 import { AuthenticationForm } from '@/components/authentication/authentication-form';
 import { signup } from '@/app/signup/actions';
 import { useToast } from '@/components/ui/use-toast';
+import { useRouter } from 'next/navigation';
 
 export function SignupForm() {
   const { toast } = useToast();
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -16,6 +18,10 @@ export function SignupForm() {
     signup({ email, password }).then((data) => {
       if (data?.error) {
         toast({ description: 'Something went wrong. Please try again', variant: 'destructive' });
+      } else {
+        localStorage.setItem('signUpEmail', email);
+        localStorage.setItem('signUpPassword', password);
+        router.push('/verify-email');
       }
     });
   }

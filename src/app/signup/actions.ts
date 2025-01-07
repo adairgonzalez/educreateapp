@@ -1,23 +1,45 @@
+// src/app/signup/actions.ts
 'use server';
 
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 
-import { createClient } from '@/utils/supabase/server';
-
-interface FormData {
+interface SignUpData {
   email: string;
   password: string;
 }
 
-export async function signup(data: FormData) {
-  const supabase = createClient();
-  const { error } = await supabase.auth.signUp(data);
+export async function signup({ email, password }: SignUpData) {
+  try {
+    const supabase = createServerComponentClient({ cookies });
 
-  if (error) {
-    return { error: true };
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+        data: {
+          password, // Store password for later use
+        },
+      },
+    });
+
+    if (error) {
+      return {
+        error: {
+          message: error.message,
+          status: error.status,
+        },
+      };
+    }
+
+    return { error: null, data };
+  } catch (err) {
+    return {
+      error: {
+        message: 'An unexpected error occurred',
+        status: 500,
+      },
+    };
   }
-
-  revalidatePath('/', 'layout');
-  redirect('/');
 }
