@@ -54,7 +54,7 @@ export default function VerifyEmailPage() {
         <Image src={'/assets/icons/logo/educreate-logo.png'} alt={'EduCreate'} width={60} height={60} />
         <h1 className="mt-8 text-2xl font-semibold">Check your email</h1>
         <p className="mt-2 text-muted-foreground text-center">
-          We've sent you a verification link. Please check your email to continue.
+          We sent you a verification link. Please check your email to continue.
         </p>
         <Button variant="ghost" onClick={handleResend} disabled={isResending} className="mt-6">
           {isResending ? 'Sending...' : 'Resend verification email'}

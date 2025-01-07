@@ -19,7 +19,7 @@ export function VerifyEmail() {
       <div className={'text-[30px] leading-[36px] font-medium tracking-[-0.6px] text-center'}>Verify your email</div>
 
       <p className={'text-muted-foreground text-center max-w-sm'}>
-        We've sent you an email with a verification link. Please check your inbox and click the link to verify your
+        We sent you an email with a verification link. Please check your inbox and click the link to verify your
         account.
       </p>
 
@@ -28,7 +28,7 @@ export function VerifyEmail() {
       </Button>
 
       <p className={'text-sm text-muted-foreground text-center'}>
-        Didn't receive the email? Check your spam folder or try resending.
+        Didn&apos;t receive the email? Check your spam folder or try resending.
       </p>
     </div>
   );
