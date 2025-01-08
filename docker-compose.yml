@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  nextapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      - NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - supabase-db
+
+  supabase-db:
+    image: supabase/postgres:15.1.0.117
+    ports:
+      - '54321:5432'
+    environment:
+      POSTGRES_PASSWORD: Ivanylely2222
+      JWT_SECRET: YQlY8pIkNTOfWbZRMmkUst56iAsdCYqMW7F08YI8qFd4cRJk3TssNG21cmYGvSWZ/FPf7B+y2QWV4I1yjOh7/Q==
+    volumes:
+      - ./supabase/volumes:/var/lib/postgresql/data

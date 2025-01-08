@@ -15,15 +15,15 @@ export function SignupForm() {
   const [password, setPassword] = useState('');
 
   function handleSignup() {
-    signup({ email, password }).then((data) => {
-      if (data?.error) {
-        toast({ description: 'Something went wrong. Please try again', variant: 'destructive' });
-      } else {
+    signup({ email, password })
+      .then(() => {
         localStorage.setItem('signUpEmail', email);
         localStorage.setItem('signUpPassword', password);
         router.push('/verify-email');
-      }
-    });
+      })
+      .catch(() => {
+        toast({ description: 'Something went wrong. Please try again', variant: 'destructive' });
+      });
   }
 
   return (

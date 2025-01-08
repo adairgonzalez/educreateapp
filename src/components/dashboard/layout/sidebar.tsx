@@ -1,6 +1,6 @@
 'use client';
 
-import { Album, CreditCard, Home } from 'lucide-react';
+import { Album, CreditCard, Home, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -41,6 +41,17 @@ export function Sidebar() {
             {item.title}
           </Link>
         ))}
+      </div>
+      <div className="w-full mt-auto">
+        <Link
+          href="/dashboard/settings"
+          className={cn('flex items-center text-base gap-3 px-4 py-3 rounded-xxs dashboard-sidebar-items', {
+            'dashboard-sidebar-items-active': pathname.includes('/dashboard/settings'),
+          })}
+        >
+          <Settings className="h-6 w-6" />
+          Account Settings
+        </Link>
       </div>
     </nav>
   );

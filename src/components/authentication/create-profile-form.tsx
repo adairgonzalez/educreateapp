@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@/utils/supabase/client';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -15,10 +15,9 @@ type UserRole = 'student' | 'teacher';
 export function CreateProfileForm() {
   const { toast } = useToast();
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
   const [fullName, setFullName] = useState('');
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [role, setRole] = useState<UserRole>('student');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,29 +28,26 @@ export function CreateProfileForm() {
     try {
       const {
         data: { user },
+        error: userError,
       } = await supabase.auth.getUser();
-      console.log('Current user:', user);
 
-      if (!user) {
+      if (userError || !user) {
+        console.error('User error:', userError);
+        toast({
+          description: 'Session expired. Please login again.',
+          variant: 'destructive',
+        });
         router.push('/login');
         return;
       }
 
-      const { error: passwordError } = await supabase.auth.updateUser({
-        password: password,
-      });
-      console.log('Password update result:', passwordError);
-
-      if (passwordError) throw passwordError;
-
       const { data: profile, error: profileError } = await supabase
-        .from('profiles')
+        .from('customers')
         .upsert({
-          id: user.id,
+          customer_id: user.id,
           full_name: fullName,
           username: username,
           role: role,
-          updated_at: new Date().toISOString(),
         })
         .select();
 
@@ -60,7 +56,11 @@ export function CreateProfileForm() {
       if (profileError) throw profileError;
 
       toast({ description: 'Profile created successfully!' });
-      router.push('/dashboard');
+      if (role === 'student') {
+        router.push('/dashboard');
+      } else if (role === 'teacher') {
+        router.push('/teacher-dashboard');
+      }
     } catch (error) {
       console.error('Profile creation error:', error);
       toast({
@@ -96,18 +96,6 @@ export function CreateProfileForm() {
           onChange={(e) => setUsername(e.target.value)}
           required
           placeholder="johndoe"
-        />
-      </div>
-
-      <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label htmlFor="password">Create Password</Label>
-        <Input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          placeholder="••••••••"
         />
       </div>
 

@@ -1,37 +1,28 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
-
-export const dynamic = 'force-dynamic';
+import { cookies } from 'next/headers';
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get('code');
-  const next = requestUrl.searchParams.get('next') ?? '/create-profile';
 
-  if (!code) {
-    console.log('No code found in request');
-    return NextResponse.redirect(new URL('/login?error=no-code-provided', requestUrl));
-  }
+  if (code) {
+    const supabase = createClient();
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
 
-  try {
-    const supabase = createRouteHandlerClient({ cookies });
-    console.log('Code:', code);
-    console.log('Cookies:', cookies().getAll());
+    if (!error) {
+      // Get the user after session exchange
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-    // Exchange the code for a session
-    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-
-    if (error) {
-      console.error('Exchange error:', error);
-      return NextResponse.redirect(new URL('/login?error=auth-failed', requestUrl));
+      if (user) {
+        // Add a small delay to ensure the session is properly set
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        return NextResponse.redirect(new URL('/create-profile', requestUrl.origin));
+      }
     }
-
-    console.log('Exchange successful:', data);
-
-    return NextResponse.redirect(new URL(next, requestUrl));
-  } catch (error) {
-    console.error('Callback error:', error);
-    return NextResponse.redirect(new URL('/login?error=server-error', requestUrl));
   }
+
+  return NextResponse.redirect(new URL('/login', requestUrl.origin));
 }
